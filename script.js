@@ -17,6 +17,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Function Definitions ---
 
+function handleAutoMode() {
+    updateStatus('Obtendo sua localização...');
+    resultDiv.classList.add('hidden'); // Hide result on mode change
+    if (!navigator.geolocation) {
+        updateStatus('Geolocalização não é suportada pelo seu navegador.', true);
+        return;
+    }
+    
+    // Adicionando opções detalhadas para a geolocalização
+    const options = {
+        enableHighAccuracy: true,
+        timeout: 15000, // 15 segundos de timeout
+        maximumAge: 0 // Não usar cache
+    };
+    
+    navigator.geolocation.getCurrentPosition(
+        (pos) => {
+            updateStatus('Localização obtida! Buscando dados do tempo...');
+            fetchWeatherData(pos.coords.latitude, pos.coords.longitude);
+        },
+        (error) => {
+            let errorMessage = '';
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    errorMessage = "Permissão de localização negada pelo usuário.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    errorMessage = "Informações de localização indisponíveis. Verifique se o GPS está ativado.";
+                    break;
+                case error.TIMEOUT:
+                    errorMessage = "A solicitação de localização expirou. Verifique sua conexão e tente novamente.";
+                    break;
+                default:
+                    errorMessage = "Ocorreu um erro desconhecido ao obter a localização.";
+                    break;
+            }
+            updateStatus(`Erro: ${errorMessage}`, true);
+            document.querySelector('input[value="manual"]').checked = true; // Revert to manual
+        },
+        options // Adicionando as opções
+    );
+}
+    
     function updateStatus(message, isError = false) {
         autoModeStatus.textContent = message;
         autoModeStatus.classList.remove('hidden');
