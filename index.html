@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irrifes-ETc</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="img/icon-Irrifes-ETc.png" type="image/png">
+</head>
+<body class="page-calculator">
+    <div class="container">
+        <header>
+            <img src="img/logo-Irrifes-ETc.png" alt="Logo Irrifes-ETc" style="max-width: 360px; margin-bottom: 15px;">
+            <p>Determine a irrigação da cultura atravéz do método Hargreaves e Samani</p>
+        </header>
+
+        <main>
+            <div class="mode-selector">
+                <label>
+                    <input type="radio" name="mode" value="manual" checked> Modo Manual
+                    <p class="help-text">Insira os dados de temperatura e radiação solar manualmente.</p>
+                </label>
+                <label>
+                    <input type="radio" name="mode" value="auto"> Modo Automático
+                    <p class="help-text">Coleta dados de temperatura e radiação solar automaticamente via localização.</p>
+                </label>
+            </div>
+
+            <div id="auto-mode-status" class="hidden"></div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="tmax">Temperatura Máxima (°C)</label>
+                    <input type="number" id="tmax" placeholder="Ex: 32">
+                    <p class="help-text">
+                        <strong>Como obter:</strong> Use um termômetro de máxima e mínima.
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="tmin">Temperatura Mínima (°C)</label>
+                    <input type="number" id="tmin" placeholder="Ex: 20">
+                </div>
+
+                <div class="form-group">
+                    <label>Temperatura Média (°C)</label>
+                    <div id="tmed-display" class="read-only-field">--</div>
+                    <p class="help-text">
+                        Calculada automaticamente: (Máxima + Mínima) / 2.
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="latitude-input">Latitude (graus decimais)</label>
+                    <input type="number" id="latitude-input" placeholder="Ex: -20.45">
+                    <p class="help-text">
+                        <strong>Como obter:</strong> Use um GPS ou serviço de mapas online. Insira valores negativos para o Hemisfério Sul.
+                    </p>
+                </div>
+
+                <div class="form-group crop-group">
+                    <label for="crop-selector-trigger">Tipo de Cultura</label>
+                    <div id="crop-selector-trigger">
+                        <span>-- Selecione a Cultura --</span>
+                    </div>
+                    <div id="crop-selection-panel">
+                        <div id="crop-selection-grid"></div>
+                    </div>
+                </div>
+
+                <div class="form-group crop-group">
+                    <label for="crop-stage">Fase de Desenvolvimento</label>
+                    <select id="crop-stage" disabled>
+                        <option value="">-- Selecione a Fase --</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="rainfall">Chuva do dia (mm) (Opcional)</label>
+                    <input type="number" id="rainfall" placeholder="Ex: 5">
+                    <p class="help-text">
+                        <strong>Como obter:</strong> Medido por pluviômetro.
+                        <br>
+                    </p>
+                </div>
+            </div>
+
+            <button id="calculate-btn">Calcular</button>
+
+            <div id="result" class="hidden">
+                <h2>Resultado:</h2>
+                <p id="result-text"></p>
+            </div>
+        </main>
+    </div>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
